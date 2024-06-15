@@ -186,6 +186,11 @@ window.addEventListener('keydown',(event) => {
         deleteLastElement();
     }
     else if(event.key === "+" || event.key === "-" || event.key === "*" || event.key === "/"){
+        if(event.key === "*"){
+            displayOperand("x");
+            return;
+        }
+        console.log(event.key)
         displayOperand(event.key);
         console.log(event.key);
     }
