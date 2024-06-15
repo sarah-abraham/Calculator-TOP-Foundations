@@ -25,12 +25,30 @@ body{
 
 .calculator-display{
     /* font-size: 35px; */
+    display: flex;
     border: 2px solid #595E60;
     border-radius: 10px;
     padding: 2%;
     text-align: end;
+    align-content: center;
     width: 90%;
     height: 60px;
+    color: #B0B7C0;
+    overflow:auto;
+}
+
+.calculator-display p{
+    text-align: center;
+    align-content: center;
+}
+
+.number-displayed{
+    margin: 0px;
+    padding: 0px;
+}
+
+.operand-displayed{
+    margin: 2%;
 }
 
 .numbers-equal-container{
@@ -77,6 +95,8 @@ body{
     /* margin-top: 6%; */
     box-sizing: border-box;
 }
+
+
 .operand{
     width: 100px;
     height: 60px;
