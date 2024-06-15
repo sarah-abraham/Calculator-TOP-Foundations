@@ -28,9 +28,7 @@ let digitFlag = 1;
 let prevNumber = "";
 let valueStack = []
 
-
-numberClass.forEach((number) => number.addEventListener('click', (event) => {
-    let number = event.target.id;
+function displayNumber(number){
     let numberDisplayed = document.createElement("p");
     numberDisplayed.className = "number-displayed";
     numberDisplayed.textContent = number;
@@ -43,11 +41,9 @@ numberClass.forEach((number) => number.addEventListener('click', (event) => {
         digitFlag = 1;
         prevNumber = number;
     }
-}))
+}
 
-operandClass.forEach((operand) => operand.addEventListener('click', (event) => {
-    let operand = event.target.id;
-    console.log(operand)
+function displayOperand(operand){
     if(operand === 'divide'){
         operand = "\u00F7";
     }
@@ -62,9 +58,29 @@ operandClass.forEach((operand) => operand.addEventListener('click', (event) => {
     }
     prevNumber = ""
     valueStack.push(operand)
-}))
+}
 
-equal.addEventListener('click', () => {
+function deleteLastElement(){
+    const numbers = "0123456789"
+    let lastNode = calculatorDisplay.lastChild;
+    if(numbers.includes(lastNode.textContent)){
+        if(valueStack[valueStack.length-1] == lastNode.textContent){
+            valueStack.pop();
+        }
+        prevNumber = prevNumber.slice(0,prevNumber.length-1);
+        console.log(prevNumber);
+    }
+    else{
+        valueStack.pop();
+        prevNumber = valueStack.pop();
+    }
+    calculatorDisplay.removeChild(lastNode);
+    console.log(prevNumber);
+    console.log(valueStack);
+
+}
+
+function displayResult(){
     if(prevNumber!=""){
         valueStack.push(prevNumber);
     }
@@ -90,6 +106,22 @@ equal.addEventListener('click', () => {
         return;
     }
     clearOrResetDisplay(result)
+}
+
+
+numberClass.forEach((number) => number.addEventListener('click', (event) => {
+    let number = event.target.id;
+    displayNumber(number);
+}))
+
+operandClass.forEach((operand) => operand.addEventListener('click', (event) => {
+    let operand = event.target.id;
+    displayOperand(operand)
+    
+}))
+
+equal.addEventListener('click', () => {
+    displayResult();
 })
 
 function clearOrResetDisplay(result){
@@ -142,17 +174,23 @@ allClear.addEventListener('click', () => {
 })
 
 deleteButton.addEventListener('click', () => {
-    const numbers = "0123456789"
-    let lastNode = calculatorDisplay.lastChild;
-    if(numbers.includes(lastNode.textContent)){
-        prevNumber = prevNumber.slice(0,prevNumber.length-1);
-        console.log(prevNumber);
+    deleteLastElement()
+})
+
+window.addEventListener('keydown',(event) => {
+    if(!isNaN(Number(event.key))){
+        console.log(event.key);
+        displayNumber(event.key);
     }
-    else{
-        valueStack.pop();
-        prevNumber = valueStack.pop();
+    else if(event.key === "Backspace" || event.key === "Delete"){
+        deleteLastElement();
     }
-    calculatorDisplay.removeChild(lastNode);
-    console.log(prevNumber);
-    console.log(valueStack);
+    else if(event.key === "+" || event.key === "-" || event.key === "*" || event.key === "/"){
+        displayOperand(event.key);
+        console.log(event.key);
+    }
+    else if(event.key === "Enter"){
+        displayResult();
+        console.log(event.key);
+    }
 })
